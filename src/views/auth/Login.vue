@@ -4,7 +4,8 @@
     <input type="text" placeholder="email" v-model="email" />
     <input type="password" placeholder="password" v-model="password" />
     <div class="error" v-if="error">{{ error }}</div>
-    <button>Login</button>
+    <button v-if="!isPending">Log in</button>
+    <button v-if="isPending" disabled>Loading</button>
   </form>
 </template>
 
@@ -13,7 +14,7 @@ import useLogin from "@/composables/useLogin";
 import { ref } from "vue";
 export default {
   setup() {
-    const { error, login } = useLogin();
+    const { error, login, isPending } = useLogin();
 
     const email = ref("");
     const password = ref("");
@@ -30,7 +31,7 @@ export default {
 
     }
 
-    return { email, password, handleSubmit, error };
+    return { email, password, handleSubmit, error, isPending };
   },
 };
 </script>
