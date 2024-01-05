@@ -1,19 +1,34 @@
 <template>
   <div class="navbar">
     <nav>
-      <img src="@/assets/logo.png" alt="logo">
+      <img src="@/assets/logo.png" alt="logo" />
       <h1><router-link :to="{ name: 'Home' }">Vue Playlists</router-link></h1>
       <div class="links">
-        <button>Logout</button>
+        <button @click="handleClick">Logout</button>
         <router-link class="btn" :to="{ name: 'Signup' }">Signup</router-link>
         <router-link class="btn" :to="{ name: 'Login' }">Login</router-link>
       </div>
+      <div class="error">{{ error }}</div>
     </nav>
   </div>
 </template>
 
 <script>
-export default {};
+import useLogout from "@/composables/useLogout";
+import { useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const router = useRouter();
+    const { logout } = useLogout();
+    const handleClick = () => {
+      logout();
+      router.push({ name: "Login" });
+    };
+
+    return { handleClick, logout };
+  },
+};
 </script>
 
 <style scoped>
