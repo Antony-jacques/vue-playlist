@@ -10,8 +10,9 @@ const useCollection = (collection) => {
     error.value = null;
     isPending.value = true;
     try {
-      await projectFirestore.collection(collection).add(doc);
-      isPending.value = false
+      const res = await projectFirestore.collection(collection).add(doc); // object containing id
+      isPending.value = false;
+      return res;
     } catch (err) {
       console.log(err.message);
       error.value = "Could not send the message";
