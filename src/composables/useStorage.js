@@ -12,7 +12,7 @@ const useStorage = () => {
   const uploadImage = async (file) => {
     filePath.value = `covers/${user.value.uid}/${file.name}` // where we want to save
 
-    const storageRef = projectStorage.ref(filePath.value)
+    const storageRef = projectStorage.ref(filePath.value) // ref to a specific file in storage
 
     try {
       const res = await storageRef.put(file)
@@ -24,7 +24,19 @@ const useStorage = () => {
     }
   }
 
-  return { url, filePath, error, uploadImage }
+  const deleteImage = async (path)=> {
+    const storageRef = projectStorage.ref(filePath.value)
+
+    try {
+      await storageRef.delete()
+    } catch (error) {
+      console.log(error.message)
+      error.value = error.message
+    }
+
+  }
+
+  return { url, filePath, error, uploadImage, deleteImage }
 };
 
 export default useStorage

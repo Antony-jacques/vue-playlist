@@ -19,10 +19,12 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import useDocument from "@/composables/useDocument"
 import getDocument from "@/composables/getDocument";
 import getUser from "@/composables/getUser";
-import { computed } from 'vue';
+import useStorage from "@/composables/useStorage";
+import { useRouter } from 'vue-router';
 
 export default {
   props: ["id"],
@@ -30,16 +32,20 @@ export default {
     const { error, document: playlist } = getDocument("playlists", props.id);
     const { user } = getUser();
     const { deleteDoc } = useDocument("playlists", props.id);
+    const { deleteImage } = useStorage();
+    const router = useRouter()
 
     const ownership = computed(()=> {
       return playlist.value && user.value && user.value.uid == playlist.value.userId
     })
 
     const handleDelete = async ()=>{
-      await deleteDoc()
+      await deleteImage(playlist.value.filePath);
+      await deleteDoc();
+      router.push({name: 'Home'});
     }
 
-    return { error, playlist, ownership, deleteDoc, handleDelete };
+    return { error, playlist, ownership, deleteDoc, handleDelete, deleteImage };
   },
 };
 </script>
