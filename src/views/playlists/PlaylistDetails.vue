@@ -7,6 +7,7 @@
       <h2> {{ playlist.title }}</h2>
       <p class="username">created by {{ playlist.userName }}</p>
       <p class="description">{{ playlist.description }}</p>
+      <button v-if="ownership">Delete playlist</button>
     </div>
 
     <!-- song list -->
@@ -19,12 +20,20 @@
 
 <script>
 import getDocument from "@/composables/getDocument";
+import getUser from "@/composables/getUser";
+import { computed } from 'vue';
+
 export default {
   props: ["id"],
   setup(props) {
     const { error, document: playlist } = getDocument("playlists", props.id);
 
-    return { error, playlist };
+    const { user } = getUser();
+    const ownership = computed(()=> {
+      return playlist.value && user.value && user.value.uid == playlist.value.userId
+    })
+
+    return { error, playlist, ownership };
   },
 };
 </script>
