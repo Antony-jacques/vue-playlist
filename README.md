@@ -19,3 +19,5 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 firebase init
+
+firebase deploy --only storage
