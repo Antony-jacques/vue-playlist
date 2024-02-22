@@ -25,9 +25,26 @@ const useDocument = (collection, id) => {
     }
   }
 
+  const updateDoc = async (updates)=>{
+    isPending.value = true
+    error.value = null
+    
+    try {
+      const res = await docRef.update(updates)
+      isPending.value = false
+
+      return res
+      
+    } catch (error) {
+      console.log(error.message)
+      isPending.value = false
+      error.value='could not update doc'
+    }
+  }
 
 
-  return { error, isPending, deleteDoc }
+
+  return { error, isPending, deleteDoc, updateDoc }
 
 }
 

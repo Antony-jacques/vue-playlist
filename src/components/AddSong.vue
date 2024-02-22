@@ -8,10 +8,8 @@
         required
         v-model="title"
         placeholder="Song title"
-      /><input type="text" />
-      <input type="text" required v-model="artist" placeholder="Artist" /><input
-        type="text"
       />
+      <input type="text" required v-model="artist" placeholder="Artist" />
       <button>add</button>
     </form>
   </div>
@@ -19,12 +17,16 @@
 
 <script>
 import { ref } from "vue";
+import useDocument from '@/composables/useDocument';
+
 export default {
   props: ["playlist"],
-  setup() {
+  setup(props) {
     const title = ref("");
     const artist = ref("");
     const showForm = ref(false);
+    const { updateDoc } = useDocument('playlists', props.playlist.id)
+
     const handleSubmit = async () => {
       const newSong = {
         title: title.value,
@@ -32,9 +34,16 @@ export default {
         id: Math.floor(Math.random() * 1000000),
       };
       console.log(newSong);
+      await updateDoc({
+        songs: [ ...props.playlist.songs, newSong ]
+      })
+      title.value='';
+      artist.value='';
     };
 
-    return { artist, title, showForm, handleSubmit };
+
+
+    return { artist, title, showForm, handleSubmit, updateDoc };
   },
 };
 </script>
