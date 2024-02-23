@@ -21,3 +21,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 firebase init
 
 firebase deploy --only storage
+
+### Firebase query
+https://firebase.google.com/docs/firestore/query-data/queries?hl=fr
